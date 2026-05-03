@@ -1,0 +1,177 @@
+<div class="level-page">
+
+  <div class="level-header">
+    <a [routerLink]="['/track', trackId || '1']" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Back to Map
+    </a>
+    <div class="level-info">
+      <h1>{{ islandName() }}</h1>
+      <span class="level-sub">{{ levelName() }}</span>
+    </div>
+    <div class="level-progress">
+      <span>{{ completedCount }} / {{ steps.length }} Steps</span>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width]="(completedCount / steps.length * 100) + '%'"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Steps Roadmap: show when NOT in challenge gate, OR in review mode (re-watching lessons) -->
+  <div class="steps-area" *ngIf="!isChallengeRequired()">
+    <!-- Review Mode badge: shows when challenge is already submitted -->
+    <div class="review-mode-banner" *ngIf="isReviewMode()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="6 12 10 16 18 8"/>
+      </svg>
+      <span>Challenge Completed — You are in <strong>Review Mode</strong></span>
+      <a [routerLink]="['/track', trackId]" class="back-to-map-link">Back to Map →</a>
+    </div>
+    <div class="road-container">
+      <div class="road-line"></div>
+      <div class="steps-road">
+        <div class="step-node"
+             *ngFor="let step of steps; let i = index; let last = last"
+             [class.done]="step.status === 'done'"
+             [class.available]="step.status === 'available'"
+             [class.locked]="step.status === 'locked'"
+             [class.is-reward]="step.type === 'task' && step.title.includes('Reward')"
+             (click)="openStep(step)">
+
+          <div class="node-connector" *ngIf="!last"></div>
+
+          <div class="node-circle">
+            <svg *ngIf="step.status === 'done'" xmlns="http://www.w3.org/2000/svg" width="26" height="26"
+                 viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="6 12 10 16 18 8"/>
+            </svg>
+            <svg *ngIf="step.status === 'locked'" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 viewBox="0 0 24 24" fill="none" stroke="#5A5A8A" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="11" width="14" height="10" rx="2"/>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+            </svg>
+            <svg *ngIf="step.status !== 'done' && step.status !== 'locked' && step.type === 'video'"
+                 xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"
+                 fill="none" stroke="#34D9D2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <svg *ngIf="step.status !== 'done' && step.status !== 'locked' && step.type === 'task' && !step.title.includes('Reward')"
+                 xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"
+                 fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            <svg *ngIf="step.title.includes('Reward')"
+                 xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                 fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Treasure Chest -->
+              <rect x="3" y="10" width="18" height="10" rx="2" ry="2"/>
+              <path d="M3 10V8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2"/>
+              <circle cx="12" cy="14" r="2"/>
+              <path d="M12 16v4"/>
+            </svg>
+            <svg *ngIf="step.status !== 'done' && step.status !== 'locked' && step.type === 'quiz'"
+                 xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"
+                 fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <div class="node-pulse" *ngIf="step.status === 'available'"></div>
+          </div>
+
+          <div class="node-info">
+            <span class="node-title">{{ step.title }}</span>
+            <span class="node-meta">
+              <span *ngIf="step.type === 'video'" class="type-badge video">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                Video {{ step.duration }}
+              </span>
+              <span *ngIf="step.type === 'task'" class="type-badge task">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                Task
+              </span>
+              <span *ngIf="step.type === 'quiz'" class="type-badge quiz">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Quiz
+              </span>
+              <span *ngIf="step.isPaid" class="paid-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                Premium
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="challenge-gate" *ngIf="isChallengeRequired() && challenge">
+    <div class="challenge-card">
+      <div class="challenge-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <h2>Challenge Gateway</h2>
+        <p class="gate-subtitle">Prove your mastery to unlock the next level</p>
+      </div>
+      
+      <div class="challenge-content">
+        <h3>{{ challenge.title || 'Final Boss Challenge' }}</h3>
+        <p class="challenge-desc">{{ challenge.description || 'You must complete this challenge to proceed.' }}</p>
+        
+        <div class="challenge-instruction" *ngIf="challenge.content || challenge.task_file">
+          <h4>Instructions</h4>
+          <p>{{ challenge.content || 'Download the provided materials, complete the task, and upload your solution below.' }}</p>
+          <a *ngIf="challenge.task_file" [href]="challenge.task_file" target="_blank" class="download-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download Materials
+          </a>
+        </div>
+      </div>
+
+      <div class="challenge-submission">
+        <div class="code-editor-container">
+          <textarea 
+            class="code-textarea" 
+            [(ngModel)]="challengeCode" 
+            placeholder="Write or paste your code solution here..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <button class="submit-btn submit-challenge-btn" [disabled]="!challengeCode.trim() || isSubmittingChallenge()" (click)="submitChallengeForm()">
+          <span *ngIf="!isSubmittingChallenge()">Submit & Unlock Level</span>
+          <span *ngIf="isSubmittingChallenge()" class="loader-spinner"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-step
+    [step]="selectedStep()"
+    [trackId]="trackId"
+    [levelId]="levelId"
+    (close)="closePanel()"
+    (markDone)="markDone($event)">
+  </app-step>
+  <div class="overlay" [class.show]="selectedStep()" (click)="closePanel()"></div>
+</div>

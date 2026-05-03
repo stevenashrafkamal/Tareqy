@@ -1,0 +1,324 @@
+/* ── Page Layout ──────────────────────────────────────────── */
+.step-page {
+  min-height: 100vh;
+  padding-top: 100px;
+  background: var(--bg);
+  background-image: radial-gradient(circle at center, var(--teal-mid) 0%, var(--bg) 70%);
+}
+
+.compass-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.compass-header h1 {
+  font-size: 2.2rem;
+  margin: 0;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.back-btn:hover {
+  color: var(--gold-matte);
+}
+
+/* ── Compass Body (Split Layout) ──────────────────────────── */
+.compass-body {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .compass-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Video Section ────────────────────────────────────────── */
+.video-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.video-toggle {
+  display: flex;
+  background: var(--teal-dark);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  border: 1px solid var(--border);
+}
+
+.video-toggle button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: calc(var(--radius-lg) - 4px);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.video-toggle button.active {
+  background: var(--teal-light);
+  color: var(--text-primary);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.video-player {
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid var(--gold-matte);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.paid-video-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--gold-matte);
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal-mid));
+}
+
+.paid-video-placeholder svg {
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.paid-video-placeholder h3 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.paid-video-placeholder p {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  margin-bottom: 1.5rem;
+}
+
+/* ── Challenge Parchment Card ──────────────────────────────── */
+.challenge-section {
+  position: relative;
+}
+
+.parchment-card {
+  background: var(--parchment);
+  color: var(--text-dark);
+  padding: 2.5rem;
+  border-radius: 4px; /* Slightly rough edges */
+  box-shadow: 10px 10px 30px rgba(0,0,0,0.6), inset 0 0 50px rgba(212, 196, 156, 0.5);
+  position: relative;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+/* Curled edges effect */
+.parchment-card::before, .parchment-card::after {
+  content: "";
+  position: absolute;
+  bottom: 15px;
+  width: 50%;
+  height: 20%;
+  box-shadow: 0 15px 10px rgba(0,0,0,0.5);
+  z-index: -1;
+  transition: all 0.3s;
+}
+
+.parchment-card::before {
+  left: 10px;
+  transform: rotate(-3deg);
+}
+
+.parchment-card::after {
+  right: 10px;
+  transform: rotate(3deg);
+}
+
+.parchment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px dashed rgba(62, 39, 35, 0.3);
+  padding-bottom: 1rem;
+}
+
+.parchment-header h2 {
+  color: var(--wood-dark);
+  font-size: 1.8rem;
+}
+
+/* Red Wax Seal */
+.wax-seal {
+  width: 40px;
+  height: 40px;
+  background: var(--wax-red);
+  border-radius: 50%;
+  position: relative;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 4px 6px rgba(0,0,0,0.3);
+  animation: seal-stamp 0.5s ease-out;
+}
+
+.seal-inner {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+}
+
+.parchment-content p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-family: var(--font-serif);
+}
+
+.bounty-reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gold-matte);
+  color: var(--wood-dark);
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+/* ── Submission Area ────────────────────────────────────── */
+.submission-area {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.upload-box {
+  border: 2px dashed rgba(62, 39, 35, 0.4);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.upload-box:hover {
+  border-color: var(--wood-dark);
+  background: rgba(62, 39, 35, 0.05);
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--wood-light);
+  font-weight: 600;
+  font-family: var(--font-sans);
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(46, 74, 37, 0.1);
+  border: 1px solid var(--forest-green);
+  color: var(--forest-green);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  animation: fade-in 0.3s ease-in;
+}
+
+/* ── Submission Panel & Upload Box ── */
+.submit-card {
+  background: var(--teal-mid);
+  border: 1px solid var(--gold-glow);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.upload-chest {
+  border: 2px dashed var(--gold-matte);
+  border-radius: var(--radius-md);
+  background: rgba(212, 175, 55, 0.05);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.upload-chest.drag-over {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--text-primary);
+  transform: scale(1.02);
+}
+
+.chest-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.chest-icon {
+  color: var(--gold-matte);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.chest-icon.open {
+  transform: translateY(-5px) scale(1.1);
+  color: var(--forest-green);
+}
+
+.upload-chest h3 {
+  color: var(--gold-matte);
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.upload-chest p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.success-bar {
+  background: rgba(46,74,37,0.3); border-left: 4px solid var(--forest-green); color: var(--forest-green); padding: 1rem; border-radius: 4px; font-weight: 600; font-family: var(--font-sans);
+}
+
+.error-bar {
+  background: rgba(155,27,48,0.3); border-left: 4px solid var(--wax-red); color: var(--wax-red); padding: 1rem; border-radius: 4px; font-weight: 600; font-family: var(--font-sans);
+}

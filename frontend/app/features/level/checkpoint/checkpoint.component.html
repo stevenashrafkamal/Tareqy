@@ -1,0 +1,66 @@
+<div class="checkpoint-page">
+  <div class="container">
+    <a routerLink="/level/1" class="back-btn">← Back to Level</a>
+
+    @if (checkpoint()) {
+      <div class="cp-card">
+        <div class="cp-header">
+          <div class="cp-badge">Checkpoint Quiz</div>
+          <h1>{{ checkpoint().title }}</h1>
+        </div>
+
+        @if (!showResult()) {
+          <!-- Progress Bar -->
+          <div class="progress-bar" style="position: relative; z-index: 1;">
+            <div class="progress-fill" [style.width.%]="(currentQuestionIndex() / checkpoint().questions.length) * 100" style="position: relative;">
+               <span class="mini-ship" style="position: absolute; right: -10px; top: -12px; font-size: 16px;">⛵</span>
+            </div>
+          </div>
+          <div class="progress-text">Question {{ currentQuestionIndex() + 1 }} of {{ checkpoint().questions.length }}</div>
+
+          <!-- Question -->
+          <div class="question-block">
+            <h3>{{ checkpoint().questions[currentQuestionIndex()].text }}</h3>
+            
+            <div class="options-list">
+              @for (opt of checkpoint().questions[currentQuestionIndex()].options; track $index) {
+                <button class="option-btn" 
+                        [class.selected]="selectedOption() === $index"
+                        (click)="selectOption($index)">
+                  <span class="opt-letter">{{ ['A','B','C','D'][$index] }}</span>
+                  <span class="opt-text">{{ opt }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn-primary" 
+                    [disabled]="selectedOption() === null"
+                    (click)="nextQuestion()">
+              {{ currentQuestionIndex() === checkpoint().questions.length - 1 ? 'Finish Quiz' : 'Next Question' }}
+            </button>
+          </div>
+        } @else {
+          <!-- Results Screen -->
+          <div class="results-block">
+            <div class="r-icon">
+              <!-- Inline SVG kept as minimal as possible just for result icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0ABFB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <h2>Quiz Completed!</h2>
+            <p>You scored <strong>{{ score() }} / {{ checkpoint().questions.length }}</strong></p>
+            
+            <div class="score-bar" style="position: relative; z-index: 1;">
+              <div class="score-fill" [style.width.%]="(score() / checkpoint().questions.length) * 100"></div>
+            </div>
+
+            <button class="btn-primary mt-2" style="position: relative; z-index: 1;" (click)="finish()">Return to Level</button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

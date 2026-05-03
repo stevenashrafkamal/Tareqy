@@ -1,0 +1,328 @@
+.step-panel {
+  position: fixed;
+  top: 0; left: -520px;
+  width: 480px;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  z-index: 50;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+.step-panel.open { left: 0; }
+
+@media (max-width: 520px) {
+  .step-panel { width: 100%; left: -100%; }
+  .step-panel.open { left: 0; }
+}
+
+.panel-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  min-height: 100%;
+}
+
+
+
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+}
+
+.panel-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.panel-title-row h2 { font-size: 1.3rem; font-weight: 900; line-height: 1.4; }
+
+.close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 34px; height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.close-btn:hover { border-color: var(--border-hover); }
+
+.panel-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 50px;
+}
+.type-badge.video { background: rgba(10,191,184,0.15); color: var(--indigo-light); }
+.type-badge.task  { background: rgba(245,158,11,0.15); color: var(--gold); }
+.type-badge.quiz  { background: rgba(16,185,129,0.15); color: var(--green); }
+
+.duration { font-size: 0.8rem; color: var(--text-muted); }
+
+/* â”€â”€ Video â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.video-placeholder {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.video-placeholder:hover { border-color: var(--indigo); }
+.video-placeholder p { color: var(--text-muted); font-size: 0.9rem; }
+
+.play-btn {
+  width: 60px; height: 60px;
+  background: var(--indigo);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px var(--indigo-glow);
+}
+
+.video-desc h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.video-desc p  { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+
+/* â”€â”€ Task â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.task-desc h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.task-desc p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1rem; }
+
+.example-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.example-label { color: var(--text-muted); font-size: 0.8rem; white-space: nowrap; }
+.example-box code { color: var(--indigo-light); font-family: var(--font-en); font-size: 0.875rem; }
+
+.code-area {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.code-header span { display: flex; align-items: center; gap: 6px; }
+
+.lang-badge {
+  background: rgba(10,191,184,0.15);
+  color: var(--indigo-light);
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.code-editor {
+  width: 100%;
+  background: var(--bg2);
+  border: none;
+  color: var(--indigo-light);
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  padding: 1rem;
+  resize: vertical;
+  outline: none;
+  direction: ltr;
+  line-height: 1.6;
+}
+.code-editor::placeholder { color: var(--text-dim); }
+
+/* â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.panel-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.success-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green);
+  padding: 1.5rem;
+  background: rgba(16,185,129,0.1);
+  border-radius: var(--radius);
+  animation: slide-up 0.4s ease both;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+.actions .btn-outline { flex: 1; justify-content: center; }
+.actions .submit-btn  { flex: 2; justify-content: center; }
+.actions .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+/* --- Post-Completion UI (Nautical/Deep Ocean Theme) --- */
+.completed-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-6 { gap: 1.5rem; }
+.w-full { width: 100%; }
+.m-0 { margin: 0; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.p-5 { padding: 1.25rem; }
+.p-6 { padding: 1.5rem; }
+
+.rounded-xl { border-radius: 12px; }
+.rounded-2xl { border-radius: 16px; }
+.rounded-lg { border-radius: 8px; }
+
+.bg-teal-900\/30 { background: rgba(0, 42, 50, 0.3); }
+.border-teal-500\/30 { border: 1px solid rgba(22, 91, 104, 0.3); }
+.text-teal-400 { color: #34d399; }
+.text-teal-300 { color: #6ee7b7; }
+.text-white { color: white; }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+.text-xl { font-size: 1.25rem; }
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.text-slate-400 { color: #94a3b8; }
+.text-slate-300 { color: #cbd5e1; }
+.text-red-400 { color: #f87171; }
+
+.bg-slate-900\/40 { background: rgba(15, 23, 42, 0.4); }
+.border-white\/5 { border: 1px solid rgba(255, 255, 255, 0.05); }
+.bg-black\/30 { background: rgba(0, 0, 0, 0.3); }
+.border-white\/10 { border: 1px solid rgba(255, 255, 255, 0.1); }
+
+.feedback-box textarea {
+  resize: none;
+  transition: border-color 0.2s;
+}
+
+.report-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.report-modal {
+  background: var(--teal-dark);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 2rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.bg-red-600 { background: #dc2626; }
+.hover\:bg-red-700:hover { background: #b91c1c; }
+.focus\:border-gold-matte:focus { border-color: var(--gold-matte); }
+.focus\:border-red-500:focus { border-color: #ef4444; }
+.outline-none { outline: none; }
+.underline { text-decoration: underline; }
+.cursor-pointer { cursor: pointer; }
+
+.text-gold-matte { color: var(--gold-matte); }
+.bg-teal-500\/20 { background: rgba(10, 191, 184, 0.2); }
+
+/* --- Fix Review/Rating UI Glitches --- */
+.feedback-box button, .report-overlay button.text-slate-400 {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+

@@ -1,0 +1,179 @@
+/* ── Page Layout ──────────────────────────────────────────── */
+.profile-page {
+  min-height: 100vh;
+  padding-top: 80px;
+  background: var(--bg);
+  position: relative;
+}
+
+.profile-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 350px;
+  background: linear-gradient(180deg, var(--teal-mid) 0%, rgba(6,11,20,0) 100%);
+  z-index: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Hero Profile ─────────────────────────────────────────── */
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: var(--teal-dark);
+  border: 1px solid var(--gold-matte);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  margin: 2rem 0 3rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  box-shadow: inset 0 0 40px rgba(212, 175, 55, 0.05);
+}
+
+.avatar {
+  width: 100px; height: 100px;
+  background: var(--gold-matte);
+  color: var(--teal-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem; font-weight: 800; font-family: var(--font-serif);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--gold-glow);
+  flex-shrink: 0;
+}
+
+.user-info { flex: 1; }
+.user-info h1 { font-size: 2.5rem; color: var(--text-primary); margin-bottom: 0.2rem; }
+.user-email { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1rem; }
+
+.rank-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.15); color: var(--gold-matte);
+  padding: 6px 14px; border-radius: 50px; font-weight: 700; font-family: var(--font-sans); border: 1px solid var(--gold-matte);
+}
+
+.user-stats { display: flex; gap: 2rem; }
+.stat-box {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  background: var(--teal-mid); padding: 1.5rem 2rem; border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.stat-val { font-size: 2rem; font-family: var(--font-serif); font-weight: 900; color: var(--gold-matte); }
+.stat-lbl { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; font-family: var(--font-sans); }
+
+/* ── Grid Layout ──────────────────────────────────────────── */
+.profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding-bottom: 4rem; }
+@media(max-width: 900px) { .profile-grid { grid-template-columns: 1fr; } .profile-hero{ flex-direction:column; text-align:center;} .user-stats{justify-content:center;} }
+
+.section-card {
+  background: var(--teal-dark); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius-lg); padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.section-card > h2 {
+  display: flex; align-items: center; gap: 0.75rem; font-size: 1.6rem; color: var(--gold-matte);
+  margin-bottom: 2rem; border-bottom: 1px dashed var(--gold-glow); padding-bottom: 1rem;
+}
+
+.reviews-card { grid-column: 1 / -1; }
+
+/* ── Captain's Log Scrolls ────────────────────────────────── */
+.scrolls-list {
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+
+.empty-log {
+  color: var(--text-muted); font-style: italic; text-align: center; padding: 2rem;
+}
+
+.scroll-item {
+  width: 100%;
+}
+
+.scroll-paper {
+  background: var(--parchment);
+  color: var(--wood-dark);
+  padding: 1.5rem;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.scroll-meta {
+  display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--wood-light); margin-bottom: 0.5rem; font-weight: 600;
+}
+
+.uppercase { text-transform: uppercase; }
+
+.log-title {
+  font-size: 1.25rem; font-family: var(--font-serif); color: var(--wood-dark); margin-bottom: 1rem;
+}
+
+.scroll-status {
+  display: flex; justify-content: flex-start; align-items: center; border-top: 1px dashed rgba(62,39,35,0.2); padding-top: 1rem;
+}
+
+/* Hourglass Pending */
+.status-hourglass {
+  display: flex; align-items: center; gap: 0.5rem; color: var(--wood-light); font-weight: 600;
+}
+
+.hourglass-anim {
+  animation: flip-hourglass 3s infinite ease-in-out;
+}
+
+@keyframes flip-hourglass {
+  0% { transform: rotate(0deg); }
+  40% { transform: rotate(180deg); }
+  100% { transform: rotate(180deg); }
+}
+
+/* Scored Status */
+.status-scored {
+  display: flex; align-items: center; gap: 2rem; width: 100%; justify-content: space-between;
+}
+
+.wax-seal-log {
+  width: 50px; height: 50px; background: var(--wax-red); color: white; display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; font-family: var(--font-serif); font-weight: 800; font-size: 1.1rem;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.chest-box {
+  display: flex; align-items: center; gap: 0.5rem; color: var(--gold-matte); font-weight: 700;
+}
+
+.chest-btn {
+  background: var(--wood-dark); color: var(--gold-matte); border: 2px solid var(--gold-matte); border-radius: 8px;
+  padding: 8px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center;
+}
+
+.chest-btn:hover { background: var(--gold-matte); color: var(--wood-dark); transform: scale(1.1); }
+
+/* Badges Grid (Spoils) */
+.badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1.5rem; }
+.badge-item {
+  display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center;
+  padding: 1.5rem 1rem; background: var(--teal-mid); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); transition: var(--transition);
+}
+.badge-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.1); }
+.badge-item.locked { opacity: 0.4; filter: grayscale(100%); }
+.badge-icon { color: var(--gold-matte); }
+.badge-name { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+
+/* Voyages List */
+.tracks-list { display: flex; flex-direction: column; gap: 1.5rem; }
+.track-item { display: flex; flex-direction: column; gap: 0.8rem; }
+.track-item-header { display: flex; align-items: center; gap: 0.8rem; }
+.track-name { font-weight: 600; flex: 1; color: var(--text-primary); }
+.track-count { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; }
+.track-bar { height: 6px; background: var(--bg2); border-radius: 3px; overflow: hidden; }
+.track-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }

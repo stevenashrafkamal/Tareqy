@@ -1,0 +1,18 @@
+<section class="how-section" id="how">
+  <div class="container">
+    <h2 class="section-title">How <span>it works</span> tareqy?</h2>
+    <p class="section-sub">4 simple steps to transform you from a beginner to a professional</p>
+
+    <div class="steps-wrapper">
+      <div class="steps-line"></div>
+      <div class="steps-grid">
+        <div class="step-card" *ngFor="let step of steps; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+          <div class="step-num">{{ step.num }}</div>
+          <div class="step-icon">{{ step.icon }}</div>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

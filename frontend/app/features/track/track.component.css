@@ -1,0 +1,248 @@
+/* ── Page Layout ──────────────────────────────────────────── */
+.track-page {
+  min-height: 100vh;
+  padding-top: 80px;
+  background: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0z' fill='%23002A32'/%3E%3Cpath d='M10 10h5v5h-5zM80 80h5v5h-5z' fill='%23133B44' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+/* ── Header ─────────────────────────────────────────────────  */
+.track-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.track-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 2.2rem;
+  font-family: var(--font-serif);
+  color: var(--gold-matte);
+  flex: 1;
+}
+
+.track-header h1 .title-icon {
+  color: var(--gold-matte);
+  flex-shrink: 0;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--parchment-dark);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: color 0.2s;
+  font-family: var(--font-sans);
+}
+
+.back-btn:hover { color: var(--gold-matte); }
+
+/* ── Progress Bar ────────────────────────────────────────────  */
+.track-progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.track-progress span {
+  color: var(--parchment-dark);
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+}
+
+.progress-bar {
+  width: 150px;
+  height: 8px;
+  background: var(--teal-light);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--gold-glow);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #B58D2D, var(--gold-matte));
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+
+/* ── Map ─────────────────────────────────────────────────────  */
+.map-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.map-svg {
+  width: 100%;
+  max-width: 800px;
+  min-height: 500px;
+  cursor: default;
+}
+
+.map-svg .clickable { cursor: pointer; }
+.map-svg .clickable:hover circle { fill: var(--teal-light); }
+
+.map-svg .island-glow {
+  animation: pulse-ring 2.5s ease-out infinite;
+  transform-origin: center;
+}
+
+circle[stroke-dasharray="5 3"] {
+  filter: blur(2px) grayscale(1);
+  opacity: 0.5;
+}
+
+.track-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: drawPath 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes drawPath {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ship-vessel {
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+  width: 100%; height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ship-vessel img {
+  animation: floatShip 3s ease-in-out infinite;
+  width: 60px;
+  height: auto;
+}
+
+@keyframes floatShip {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+.crew-members .worker {
+  position: absolute;
+  font-size: 14px;
+  animation: walk 2s infinite alternate ease-in-out;
+}
+
+@keyframes walk {
+  from { transform: translateX(0); }
+  to { transform: translateX(15px); }
+}
+
+.floating-ship {
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5));
+  transition: transform 1s ease-in-out;
+}
+
+/* ── Side Panel ──────────────────────────────────────────────  */
+.side-panel {
+  position: fixed;
+  top: 0;
+  left: -350px;
+  width: 320px;
+  height: 100vh;
+  background: var(--bg-surface);
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0z' fill='%23F4E4BC' opacity='0.05'/%3E%3C/svg%3E");
+  border-right: 2px solid var(--gold-matte);
+  padding: 5rem 2rem 2rem;
+  z-index: 50;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+}
+
+.side-panel.open { left: 0; }
+
+.panel-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--teal-dark);
+  border: 1px solid var(--gold-matte);
+  border-radius: 50%;
+  color: var(--gold-matte);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.close-btn:hover { background: var(--gold-matte); color: var(--teal-dark); }
+
+.panel-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  border: 2px solid var(--gold-matte);
+  color: var(--gold-matte);
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.panel-content h2 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold-matte);
+}
+
+.panel-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--parchment-dark);
+  font-size: 0.9rem;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  font-family: var(--font-sans);
+}
+.badge.easy { background: var(--forest-green); color: var(--parchment); }
+.badge.medium { background: var(--gold-matte); }
+.badge.hard { background: var(--wax-red); color: white; }
+
+.enter-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}

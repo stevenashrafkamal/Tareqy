@@ -1,0 +1,61 @@
+<div class="leaderboard-page">
+  <!-- Back navigation -->
+  <a routerLink="/track/1" class="back-btn container">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Return to Map
+  </a>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loader-container">
+      <div class="loader"></div>
+      <p>Reading the stars...</p>
+    </div>
+  } @else {
+    <div class="leaderboard-container container">
+      <div class="wooden-board">
+        <div class="board-header">
+          <h1 class="serif-title">The Pirate Lords</h1>
+          <p class="subtitle">Richest Bounty Hunters of "{{ challenge()?.title }}"</p>
+        </div>
+
+        <div class="board-list">
+          <!-- Leaderboard Rows -->
+          @for (lord of pirateLords(); track lord.userId) {
+            <div class="lord-row" [ngClass]="{'rank-1': lord.rank === 1, 'rank-2': lord.rank === 2, 'rank-3': lord.rank === 3}">
+              <div class="lord-rank">
+                <span class="rank-num">#{{ lord.rank }}</span>
+                @if (lord.rank === 1) {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="crown" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
+                  </svg>
+                }
+              </div>
+
+              <div class="lord-avatar">
+                {{ lord.username.charAt(0) }}
+              </div>
+
+              <div class="lord-name">
+                <span class="name">{{ lord.username }}</span>
+              </div>
+
+              <div class="lord-bounty">
+                <span class="coins">{{ lord.points }}</span>
+                <span class="lbl-coins">Gold Coins</span>
+              </div>
+            </div>
+          }
+
+          @if (pirateLords().length === 0) {
+            <div class="empty-lords">
+              <p>No pirates have claimed the bounty yet. Be the first!</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

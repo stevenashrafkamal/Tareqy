@@ -1,0 +1,215 @@
+<div class="step-panel" [class.open]="step">
+  <div class="panel-inner" *ngIf="step">
+
+    <!-- Header -->
+    <div class="panel-header">
+      <div class="panel-title-row">
+        <h2>{{ step.title }}</h2>
+        <button class="close-btn" (click)="onClose()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="panel-badges">
+        <span class="type-badge" [class]="step.type">
+          <svg *ngIf="step.type === 'video'" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <svg *ngIf="step.type === 'quiz'" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <svg *ngIf="step.type === 'task'" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          {{ step.type === 'video' ? 'Video' : step.type === 'quiz' ? 'Quiz' : 'Task' }}
+        </span>
+        <span *ngIf="step.duration" class="duration">{{ step.duration }}</span>
+      </div>
+    </div>
+
+    <!-- Video Section -->
+    <div class="video-section flex flex-col gap-6" *ngIf="step.type === 'video'">
+      <div class="video-container mt-4 flex justify-center">
+        <a *ngIf="step?.videoUrl" [href]="step.videoUrl" target="_blank" rel="noopener noreferrer" 
+           class="flex flex-col items-center p-6 border-2 border-[var(--primary-gold)] rounded-xl hover:bg-[var(--primary-gold)] hover:text-black transition-all group">
+          <svg class="w-12 h-12 mb-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg>
+          <span class="font-bold text-lg">Watch Lesson on YouTube</span>
+        </a>
+
+        <div *ngIf="!step?.videoUrl" class="text-gray-500 border border-dashed p-4 rounded-lg">
+          <p>⚠️ No video link found in database for this step.</p>
+          <span class="text-xs">ID: {{step?.id || step?._id}}</span>
+        </div>
+      </div>
+      <div class="video-desc">
+        <h3 class="text-2xl font-bold mb-3 text-[var(--gold-matte)]">About this lesson</h3>
+        <p class="text-lg lg:text-xl text-[var(--text-muted)] leading-relaxed m-0">In this lesson you will learn the fundamentals step by step with practical examples. Follow along and then complete the task.</p>
+      </div>
+    </div>
+
+    <!-- Task Section -->
+    <div class="task-section" *ngIf="step.type === 'task' || step.type === 'quiz'">
+      <div class="task-desc">
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+          </svg>
+          The Task
+        </h3>
+        <p>Write a JavaScript function that takes an array of numbers and returns their sum. Use a different approach than usual.</p>
+        <div class="example-box">
+          <span class="example-label">Example:</span>
+          <code>sumArray([1, 2, 3, 4]) // returns 10</code>
+        </div>
+      </div>
+
+      <div class="code-area">
+        <div class="code-header">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+            Code
+          </span>
+          <span class="lang-badge">JavaScript</span>
+        </div>
+        <textarea
+          [ngModel]="code()"
+          (ngModelChange)="code.set($event)"
+          placeholder="// Write your code here...
+function sumArray(arr) {
+  // your solution
+}"
+          class="code-editor"
+          dir="ltr"
+          rows="8">
+        </textarea>
+      </div>
+    </div>
+
+    <!-- Footer & Post-Completion UI -->
+    <div class="panel-footer">
+      
+      <!-- Mark as Done UI (Visible when NOT completed) -->
+      <div class="actions" *ngIf="!isCompleted()">
+        <button class="btn-outline" (click)="onClose()">Cancel</button>
+        <button class="btn-primary submit-btn" (click)="submit()" [disabled]="submitting()">
+          <span class="flex items-center gap-2">
+            <svg *ngIf="submitting()" class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg *ngIf="!submitting()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            {{ submitting() ? 'Processing...' : step.type === 'video' ? 'Mark as Done' : 'Submit Solution' }}
+          </span>
+        </button>
+      </div>
+
+      <!-- Feedback & Report Section (Revealed when completed) -->
+      <div class="completed-section flex flex-col gap-6 w-full animate-fade-in" *ngIf="isCompleted()">
+        
+        <!-- Success Header -->
+        <div class="flex items-center gap-3 p-4 bg-teal-900/30 border border-teal-500/30 rounded-xl">
+          <div class="w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <h4 class="text-white font-bold m-0">Lesson Completed!</h4>
+            <p class="text-xs text-teal-300 opacity-80 m-0">Your progress has been saved successfully.</p>
+          </div>
+        </div>
+
+        <!-- Feedback Form -->
+        <div class="feedback-box bg-slate-900/40 p-5 rounded-xl border border-white/5" *ngIf="!isFeedbackSubmitted()">
+          <p class="text-sm font-semibold text-gold-matte mb-4">How was this lesson?</p>
+          
+          <!-- Stars -->
+          <div class="flex gap-2 mb-4">
+            <button *ngFor="let s of [1,2,3,4,5]" 
+                    (click)="rating.set(s)"
+                    class="transition-transform hover:scale-125 focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                   [attr.fill]="rating() >= s ? '#D4AF37' : 'none'"
+                   [attr.stroke]="rating() >= s ? '#D4AF37' : '#5A5A8A'" 
+                   stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            </button>
+          </div>
+
+          <textarea 
+            [ngModel]="feedbackText()"
+            (ngModelChange)="feedbackText.set($event)"
+            placeholder="Share your thoughts or leave a review..."
+            class="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-sm text-white focus:border-gold-matte outline-none min-h-[80px]">
+          </textarea>
+
+          <div class="mt-4 flex justify-between items-center">
+            <button class="text-xs text-slate-400 hover:text-white underline" (click)="showReportForm.set(true)">
+              Report a problem?
+            </button>
+            <button class="btn-primary submit-review-btn" (click)="submitFeedback()" [disabled]="rating() === 0">
+              Submit Review
+            </button>
+          </div>
+        </div>
+
+        <!-- Feedback Success -->
+        <div class="p-6 text-center animate-bounce" *ngIf="isFeedbackSubmitted()">
+           <span class="text-gold-matte font-bold">Thank you for your feedback! ⭐</span>
+        </div>
+
+        <!-- Report Form Modal/Area -->
+        <div class="report-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] flex items-center justify-center p-4" *ngIf="showReportForm()">
+          <div class="report-modal bg-[#002A32] border-2 border-red-900/50 p-6 rounded-2xl w-full max-w-md shadow-2xl">
+            <h3 class="text-red-400 font-serif text-xl mb-2 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Report Issue
+            </h3>
+            <p class="text-sm text-slate-400 mb-4">Is something wrong with this step? Let us know.</p>
+
+            <input type="text" 
+                   [ngModel]="reportTitle()"
+                   (ngModelChange)="reportTitle.set($event)"
+                   placeholder="Issue Title (e.g. Broken Video)" 
+                   class="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-sm text-white mb-3 outline-none focus:border-red-500">
+            
+            <textarea 
+              [ngModel]="reportDesc()"
+              (ngModelChange)="reportDesc.set($event)"
+              placeholder="Provide more details..."
+              class="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-sm text-white outline-none min-h-[100px] focus:border-red-500">
+            </textarea>
+
+            <div class="flex justify-end gap-3 mt-6">
+              <button class="px-4 py-2 rounded-lg text-sm text-slate-300 hover:bg-white/5" (click)="showReportForm.set(false)">Cancel</button>
+              <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg text-sm font-bold transition-colors" 
+                      (click)="submitReport()"
+                      [disabled]="isReportSubmitted()">
+                {{ isReportSubmitted() ? 'Report Sent' : 'Send Report' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

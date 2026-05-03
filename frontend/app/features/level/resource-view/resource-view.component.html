@@ -1,0 +1,110 @@
+<div class="step-page">
+  <div class="compass-container container">
+    <div class="compass-header">
+      <a [routerLink]="['/track', challenge()?.track_id || '1']" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Back to Map
+      </a>
+      @if(challenge()) {
+        <h1 class="serif-title">{{ challenge()?.title }}</h1>
+      }
+    </div>
+
+    <!-- Compass Layout Body -->
+    <div class="compass-body">
+      
+      <!-- Video Player Section (Left Side) -->
+      <div class="video-section">
+        <div class="video-toggle">
+          <button [class.active]="!showPaidVideo()" (click)="toggleVideoType()">Free Deck (YouTube)</button>
+          <button [class.active]="showPaidVideo()" (click)="toggleVideoType()">Captain's Quarters (Paid)</button>
+        </div>
+
+        <div class="video-player">
+          @if(!showPaidVideo()) {
+            <!-- Mock YouTube iframe -->
+            <iframe 
+              width="100%" 
+              height="100%" 
+              [src]="getSafeYoutubeUrl('dQw4w9WgXcQ')" 
+              title="YouTube video player" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          } @else {
+            <!-- Paid video placeholder -->
+            <div class="paid-video-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+                <line x1="7" y1="2" x2="7" y2="22"/>
+                <line x1="17" y1="2" x2="17" y2="22"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <line x1="2" y1="7" x2="7" y2="7"/>
+                <line x1="2" y1="17" x2="7" y2="17"/>
+                <line x1="17" y1="17" x2="22" y2="17"/>
+                <line x1="17" y1="7" x2="22" y2="7"/>
+              </svg>
+              <h3>Premium Content Locked</h3>
+              <p>Upgrade your rank to access the Captain's Quarters.</p>
+              <button class="btn-primary">Unlock</button>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Challenge Card Section (Parchment - Right Side) -->
+      <div class="challenge-section">
+        <div class="parchment-card">
+          <div class="parchment-header">
+            <h2 class="serif-title">The Challenge</h2>
+            <span class="wax-seal" [title]="challenge()?.difficulty">
+              <span class="seal-inner"></span>
+            </span>
+          </div>
+
+          <div class="parchment-content">
+            <p>{{ challenge()?.description }}</p>
+
+            <div class="bounty-reward">
+              <strong>Bounty:</strong> {{ challenge()?.points }} Gold Coins
+            </div>
+          </div>
+
+          <div class="submission-area">
+            @if(submissionSuccess()) {
+              <div class="success-message">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4A25" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                Message sent to the Pirate Lords! Check your Captain's Log.
+              </div>
+            } @else {
+              <div class="upload-chest" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" [class.drag-over]="isDragging">
+                <input type="file" id="submissionFile" (change)="onFileSelected($event)" accept=".zip,.rar,.pdf" hidden>
+                <label for="submissionFile" class="chest-label">
+                  <div class="chest-icon" [class.open]="submissionFile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                      <circle cx="12" cy="16" r="1"/>
+                    </svg>
+                  </div>
+                  <h3>{{ submissionFile ? 'File Secured in Chest!' : 'ارمي الملف في الصندوق' }}</h3>
+                  <p>{{ submissionFile ? submissionFile.name : 'Drag & Drop your code (.zip) or PDF here' }}</p>
+                </label>
+              </div>
+
+              <button class="btn-primary" [disabled]="!submissionFile || submissionLoading()" (click)="submitAction()">
+                {{ submissionLoading() ? 'Sending Owl...' : 'Submit Challenge' }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,141 @@
+<div class="track-page">
+
+  <!-- Header -->
+  <div class="track-header">
+    <a routerLink="/" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      The Grand Map
+    </a>
+
+    <h1>
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           class="title-icon">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+      {{ trackName() }}
+    </h1>
+
+    <div class="track-progress" *ngIf="completedCount() as completed">
+      <span>{{ completed }} / {{ islands.length }} Islands Plundered</span>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="(completed / islands.length) * 100"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-container">
+
+    <svg class="map-svg" viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="#002A32"/>
+          <stop offset="100%" stop-color="#00161a"/>
+        </radialGradient>
+        <symbol id="icon-check" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="#2E4A25" opacity="0.9"/>
+          <polyline points="6 12 10 16 18 8" fill="none" stroke="#D4AF37" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+        <symbol id="icon-lock" viewBox="0 0 24 24">
+          <rect x="5" y="11" width="14" height="10" rx="2" fill="#9B1B30"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="#F4E4BC" stroke-width="2"
+                stroke-linecap="round"/>
+        </symbol>
+      </defs>
+
+      <rect width="720" height="480" fill="url(#bg-grad)"/>
+
+      <!-- Path solid line animated -->
+      <path [attr.d]="getPathD()" fill="none" stroke="#D4AF37" stroke-width="3"
+            opacity="0.8" stroke-linecap="round" class="track-path"/>
+
+      <g *ngFor="let island of islands" (click)="selectIsland(island)"
+         [class.clickable]="!island.locked">
+
+        <!-- Success Glow for completed island -->
+        <circle *ngIf="island.completed"
+                [attr.cx]="island.x" [attr.cy]="island.y" r="50"
+                fill="none" stroke="#D4AF37"
+                opacity="0.4"
+                class="island-glow"/>
+
+        <circle [attr.cx]="island.x" [attr.cy]="island.y" r="32"
+                [attr.fill]="island.completed ? '#2E4A25' : island.locked ? '#0a3d46' : '#165b68'"
+                [attr.stroke]="island.completed ? '#D4AF37' : island.locked ? '#002A32' : '#D4AF37'"
+                stroke-width="3"
+                [attr.stroke-dasharray]="island.locked ? '5 3' : 'none'"/>
+
+        <use *ngIf="island.completed" href="#icon-check" [attr.x]="island.x - 12" [attr.y]="island.y - 12" width="24" height="24"/>
+        <use *ngIf="!island.completed && island.locked" href="#icon-lock" [attr.x]="island.x - 12" [attr.y]="island.y - 12" width="24" height="24"/>
+
+        <!-- Text -->
+        <text [attr.x]="island.x" [attr.y]="island.y + 52"
+              text-anchor="middle" font-size="14" font-weight="700" font-family="'Playfair Display', serif"
+              [attr.fill]="island.locked ? '#7DA5BC' : '#D4AF37'">
+          {{ island.name }}
+        </text>
+      </g>
+
+      <!-- The Ship -->
+      <g *ngIf="currentShipPos() as pos" class="floating-ship" style="transition: all 1s ease-in-out;"
+         [attr.transform]="'translate(' + (pos.x - 50) + ',' + (pos.y - 80) + ')'">
+         <foreignObject width="100" height="100">
+           <div xmlns="http://www.w3.org/1999/xhtml" class="ship-vessel">
+             <img [src]="shipService.getShipIconPath(shipType())" alt="Your Ship">
+             
+             <div *ngIf="shipType() === 'galleon'" class="crew-members">
+               <span class="worker w1" style="top: 10px; left: 10px;">⚓</span>
+               <span class="worker w2" style="top: 30px; left: 60px;">🧹</span>
+             </div>
+           </div>
+         </foreignObject>
+      </g>
+    </svg>
+
+    <!-- Side Panel -->
+    <div class="side-panel" [class.open]="selectedIsland()">
+      <div class="panel-content" *ngIf="selectedIsland()">
+
+        <button class="close-btn" (click)="selectedIsland.set(null)" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+        <div class="panel-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/>
+          </svg>
+        </div>
+
+        <h2>{{ selectedIsland()?.name }}</h2>
+
+        <div class="panel-meta">
+          <span class="badge" [ngClass]="selectedIsland()?.difficulty?.toLowerCase()">{{ selectedIsland()?.difficulty || 'Medium' }}</span>
+          <span>{{ selectedIsland()?.steps }} steps</span>
+        </div>
+
+        <button class="btn-primary enter-btn" style="text-decoration: none; display: flex;" (click)="enterIsland()">
+          Set Sail
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>

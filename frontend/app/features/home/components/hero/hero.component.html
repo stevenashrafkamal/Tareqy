@@ -1,0 +1,90 @@
+﻿<section class="hero">
+  <div class="stars">
+    <span *ngFor="let s of stars" class="star"
+      [style.left]="((s * 47) % 100) + '%'"
+      [style.top]="((s * 31) % 100) + '%'"
+      [style.animation-delay]="(s * 0.3) + 's'"></span>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-text">
+      <span class="hero-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M7 12h.01"/><path d="M17 9v.01"/><path d="M17 15v.01"/><line x1="9" y1="10" x2="9" y2="14"/><line x1="7" y1="12" x2="11" y2="12"/></svg>
+        Learn in a new way
+      </span>
+      <h1>Not just learning...<br><span class="highlight">You're playing!</span></h1>
+      <p>Pick your track, follow the map, solve challenges, and collect rewards. A real learning adventure in a game-like journey.</p>
+      <div class="hero-actions">
+        <a routerLink="/auth/register" class="btn-primary">
+          Start your journey
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        </a>
+        <a href="#tracks" class="btn-outline">See Tracks</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">+50</span><span class="stat-label">Available Tracks</span></div>
+        <div class="divider"></div>
+        <div class="stat"><span class="stat-num">+1000</span><span class="stat-label">Active Users</span></div>
+        <div class="divider"></div>
+        <div class="stat"><span class="stat-num">+200</span><span class="stat-label">Challenges & Tasks</span></div>
+      </div>
+    </div>
+
+    <div class="hero-map">
+      <svg viewBox="0 0 500 450" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="islandGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#0ABFB8" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#0ABFB8" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#0ABFB8"/>
+            <stop offset="100%" stop-color="#34D9D2"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Connection path -->
+        <path #mapPath class="map-path"
+          d="M 100 360 Q 130 300 190 270 Q 240 245 255 190 Q 270 130 325 115 Q 375 100 405 80"
+          fill="none" stroke="url(#pathGrad)" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- Step dots -->
+        <circle cx="155" cy="315" r="6" fill="#0ABFB8" opacity="0.8"/>
+        <circle cx="205" cy="268" r="6" fill="#0ABFB8" opacity="0.6"/>
+        <circle cx="240" cy="230" r="6" fill="#0ABFB8" opacity="0.4"/>
+        <circle cx="300" cy="155" r="6" fill="#5A5A8A" opacity="0.4"/>
+        <circle cx="355" cy="120" r="6" fill="#5A5A8A" opacity="0.3"/>
+
+        <!-- Island 1 Start -->
+        <g class="island unlocked" style="cursor:pointer">
+          <circle cx="100" cy="360" r="40" fill="url(#islandGlow)"/>
+          <circle cx="100" cy="360" r="30" fill="#1E1E3F" stroke="#0ABFB8" stroke-width="2"/>
+          <circle cx="100" cy="360" r="30" class="pulse-ring" fill="none" stroke="#0ABFB8" stroke-width="1.5"/>
+          <!-- Island icon: map pin -->
+          <path d="M100 350 C100 350 93 340 93 335 C93 331 96 328 100 328 C104 328 107 331 107 335 C107 340 100 350 100 350Z" fill="#0ABFB8"/>
+          <circle cx="100" cy="335" r="3" fill="#E2E2FF"/>
+          <text x="100" y="405" text-anchor="middle" font-size="12" fill="#34D9D2" font-weight="600">Start</text>
+        </g>
+
+        <!-- Island 2 -->
+        <g class="island unlocked" style="cursor:pointer">
+          <circle cx="255" cy="190" r="40" fill="url(#islandGlow)"/>
+          <circle cx="255" cy="190" r="30" fill="#1E1E3F" stroke="#0ABFB8" stroke-width="2"/>
+          <circle cx="255" cy="190" r="30" class="pulse-ring" fill="none" stroke="#0ABFB8" stroke-width="1.5" style="animation-delay:0.7s"/>
+          <!-- Island icon: lightning bolt -->
+          <polygon points="257,179 252,190 255,190 253,201 258,190 255,190" fill="#34D9D2"/>
+          <text x="255" y="233" text-anchor="middle" font-size="12" fill="#34D9D2" font-weight="600">Level 2</text>
+        </g>
+
+        <!-- Island 3 Locked -->
+        <g class="island locked">
+          <circle cx="405" cy="80" r="30" fill="#12122A" stroke="#5A5A8A" stroke-width="2" stroke-dasharray="5 3"/>
+          <!-- Island icon: lock -->
+          <rect x="398" y="79" width="14" height="10" rx="2" fill="#5A5A8A"/>
+          <path d="M401 79 V75 C401 72 409 72 409 75 V79" fill="none" stroke="#5A5A8A" stroke-width="2"/>
+          <text x="405" y="123" text-anchor="middle" font-size="12" fill="#5A5A8A" font-weight="600">Locked</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>

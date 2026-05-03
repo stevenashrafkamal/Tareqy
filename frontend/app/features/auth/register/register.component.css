@@ -1,0 +1,30 @@
+﻿@import '../login/login.component.css';
+
+.perks {
+  display: flex; flex-direction: column; gap: .9rem;
+  margin-top: 1rem;
+}
+.perk {
+  display: flex; align-items: center; gap: .8rem;
+  color: var(--text-muted); font-size: .9rem; font-weight: 500;
+}
+.perk-icon { font-size: 1.1rem; }
+
+.track-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .3rem; }
+.chip {
+  padding: .3rem .8rem; border-radius: 99px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-family: var(--font-en); font-size: .78rem; font-weight: 600;
+  color: var(--text-muted); cursor: pointer; transition: var(--transition);
+}
+.chip:hover  { border-color: var(--indigo); color: var(--text); }
+.chip.sel    { background: rgba(10,191,184,.2); border-color: var(--indigo); color: var(--indigo-light); }
+
+.verify-state { text-align: center; padding: 1rem 0; }
+.verify-icon  { font-size: 3.5rem; margin-bottom: 1rem; }
+.verify-state h1 { margin-bottom: .6rem; }
+.verify-state p  { color: var(--text-muted); font-size: .92rem; line-height: 1.7; }
+.verify-state strong { color: var(--indigo-light); }
+
+.spin { animation: spin-anim .8s linear infinite; }
+@keyframes spin-anim { to { transform: rotate(360deg); } }

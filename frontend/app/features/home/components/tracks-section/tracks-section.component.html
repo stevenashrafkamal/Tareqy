@@ -1,0 +1,27 @@
+<section class="tracks-section" id="tracks">
+  <div class="container">
+    <h2 class="section-title">Choose Your Track now</h2>
+    <p class="section-sub">Each track = a complete adventure with islands, levels, and challenges</p>
+
+    <div class="tracks-grid">
+      <a class="track-card" style="display: block; text-decoration: none; color: inherit; position: relative;" *ngFor="let track of tracks" [routerLink]="['/track', track.id]">
+        <div class="card-glow" [style.background]="'radial-gradient(circle at 50% 0%, ' + track.color + '22, transparent 70%)'"></div>
+        <div class="card-header">
+          <span class="track-icon" [style.color]="track.color">{{ track.icon }}</span>
+          <span class="badge" [class]="track.difficulty">
+  {{ track.difficulty === 'easy' ? 'Easy' : track.difficulty === 'medium' ? 'Medium' : 'Hard' }}
+</span>
+        </div>
+        <h3>{{ track.name }}</h3>
+        <p>{{ track.description }}</p>
+        <div class="card-footer">
+          <span class="levels-info">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            {{ track.levels }} Islands
+          </span>
+          <span class="btn-start">Start →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>

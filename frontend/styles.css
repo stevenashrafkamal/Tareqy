@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  /* Deep Ocean Dark Mode Colors */
+  --teal-dark: #002A32;
+  --teal-mid: #0a3d46;
+  --teal-light: #165b68;
+  --forest-green: #2E4A25;
+  --forest-light: #416834;
+  --gold-matte: #D4AF37;
+  --gold-glow: rgba(212, 175, 55, 0.4);
+  --wax-red: #9B1B30;
+  
+  /* Additional nautical colors */
+  --parchment: #F4E4BC;
+  --parchment-dark: #D4C49C;
+  --wood-dark: #3E2723;
+  --wood-light: #5D4037;
+
+  /* Standard mappings */
+  --bg: var(--teal-dark);
+  --bg-surface: var(--teal-mid);
+  --bg-card: var(--teal-light);
+  
+  --text-primary: #E8F4F8;
+  --text-muted: #7DA5BC;
+  --text-dark: #1A1A1A; /* For parchment */
+
+  /* Fonts */
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Shape & Animation */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body.theme-ocean {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  direction: ltr;
+}
+
+h1, h2, h3, h4, h5, h6, .serif-title {
+  font-family: var(--font-serif);
+  color: var(--gold-matte);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold-matte); border-radius: 3px; }
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold-matte);
+  color: var(--text-dark);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  border: 1px solid var(--gold-glow);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.btn-primary:hover {
+  background: #E5C158;
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px var(--gold-glow);
+}
+
+.btn-danger {
+  background: var(--wax-red);
+  color: #fff;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #a91e35;
+  box-shadow: 0 0 15px rgba(155, 27, 48, 0.5);
+}
+
+/* Animations included globally for components */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px var(--gold-glow); }
+  50% { box-shadow: 0 0 25px var(--gold-matte); }
+}
+
+@keyframes seal-stamp {
+  0% { transform: scale(2) rotate(15deg); opacity: 0; }
+  50% { transform: scale(0.9) rotate(-5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+@keyframes chest-open {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1) rotate(2deg); }
+  100% { transform: scale(1); filter: brightness(1.5); }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}

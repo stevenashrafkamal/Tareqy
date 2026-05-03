@@ -1,0 +1,25 @@
+<div class="auth-page">
+  <div class="auth-bg">
+    <div class="star type-1"></div><div class="star type-2"></div><div class="star type-3"></div><div class="star type-4"></div>
+  </div>
+
+  <div class="auth-card verify-card">
+    <div class="auth-header">
+      <h2>Verify Your Email</h2>
+      <p>We are confirming your account using the secure verification link.</p>
+    </div>
+
+    @if (errorMsg()) {
+      <div class="error-msg">{{ errorMsg() }}</div>
+    }
+    @if (successMsg()) {
+      <div class="success-msg">{{ successMsg() }}</div>
+    }
+
+    @if (loading()) {
+      <button class="btn-primary" disabled>
+        <span class="loader"></span> Verifying...
+      </button>
+    }
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="admin-page">
+  <div class="page-header">
+    <h1>Manage Tracks</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add Track
+    </button>
+  </div>
+
+  <div class="table-card">
+    <div class="loading-row" *ngIf="loading()">Loading tracks…</div>
+    
+    <table class="admin-table" *ngIf="!loading()">
+      <thead>
+        <tr>
+          <th>Track Title</th>
+          <th>Description</th>
+          <th>Difficulty</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="tracks().length === 0">
+          <td colspan="5" class="empty-state">No tracks found. Create one above!</td>
+        </tr>
+        <tr *ngFor="let track of tracks()">
+          <td><strong>{{ track.title }}</strong></td>
+          <td class="desc-col" title="{{ track.description }}">
+            {{ (track.description | slice:0:60) + (track.description?.length > 60 ? '...' : '') }}
+          </td>
+          <td>
+            <span [class]="'badge difficulty ' + (track.difficulty || 'beginner')">
+              {{ track.difficulty || 'Beginner' }}
+            </span>
+          </td>
+          <td>
+            <span [class]="'badge status ' + (track.is_published ? 'published' : 'draft')">
+              {{ track.is_published ? 'Published' : 'Draft' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="act delete" title="Delete Track" (click)="deleteTrack(track._id)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal Overlay -->
+<div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Create New Track</h2>
+      <button class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="field">
+        <label>Track Title</label>
+        <input type="text" [(ngModel)]="form.title" class="input" placeholder="e.g. Full-Stack Web Development" />
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea [(ngModel)]="form.description" class="input textarea" rows="3" placeholder="Brief description of the track"></textarea>
+      </div>
+      <div class="field">
+        <label>Difficulty</label>
+        <select [(ngModel)]="form.difficulty" class="input select">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+      <div class="field filter-row">
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="form.is_published" />
+          Publish immediately (visible to users)
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn-create" [disabled]="isSubmitting() || !form.title || !form.description" (click)="createTrack()">
+        <span *ngIf="!isSubmitting()">Create Track</span>
+        <span *ngIf="isSubmitting()" class="spinner"></span>
+      </button>
+    </div>
+  </div>
+</div>

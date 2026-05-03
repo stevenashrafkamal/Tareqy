@@ -1,0 +1,81 @@
+<div class="auth-page">
+  <div class="auth-left" style="background: linear-gradient(135deg,#0D0D1A 0%,#0F1F2A 60%,#12122A 100%)">
+    <div class="auth-brand"><span class="brand-text">Tareqy</span><span class="brand-dot"></span></div>
+    <h2>Begin your adventure</h2>
+    <p>Join 12,000+ developers turning their learning journey into a treasure hunt.</p>
+    <div class="perks">
+      <div class="perk"><span class="perk-icon">🗺️</span> Treasure map roadmaps</div>
+      <div class="perk"><span class="perk-icon">⚡</span> Daily challenges & rewards</div>
+      <div class="perk"><span class="perk-icon">🏅</span> Badges & leaderboard</div>
+      <div class="perk"><span class="perk-icon">🚀</span> Final project + mentorship</div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-card">
+
+      @if (step() === 'form') {
+        <h1>Create account</h1>
+        <p class="auth-sub">Start free — no credit card needed</p>
+
+        @if (errorMsg()) {
+          <div class="error-msg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ errorMsg() }}
+          </div>
+        }
+
+        <form (ngSubmit)="onRegister()">
+          <div class="field">
+            <label>Username</label>
+            <input type="text" [(ngModel)]="username" name="username" placeholder="Create a username">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email">
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <div class="pw-wrap">
+              <input [type]="showPw() ? 'text':'password'" [(ngModel)]="password" name="password" placeholder="Create a password">
+              <button type="button" class="eye-btn" (click)="showPw.set(!showPw())">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Confirm password</label>
+            <input type="password" [(ngModel)]="confirm" name="confirm" placeholder="Confirm your password">
+          </div>
+
+          <div class="field">
+            <label>Interests (optional)</label>
+            <div class="track-chips">
+              @for (t of tracks; track t) {
+                <button type="button" class="chip" [class.sel]="selected.includes(t)" (click)="toggleTrack(t)">{{ t }}</button>
+              }
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary submit-btn" [disabled]="loading()">
+            @if (loading()) {
+              <svg class="spin" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity=".3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+            }
+            {{ loading() ? 'Creating...' : 'Create account' }}
+          </button>
+        </form>
+
+        <p class="auth-switch">Already have an account? <a routerLink="/auth/login">Log in</a></p>
+      }
+
+      @if (step() === 'verify') {
+        <div class="verify-state">
+          <div class="verify-icon">📧</div>
+          <h1>Check your email</h1>
+          <p>We sent a verification link to <strong>{{ email }}</strong>. Open your inbox and click Verify to activate your account.</p>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

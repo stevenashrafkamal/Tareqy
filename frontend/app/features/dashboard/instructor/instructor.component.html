@@ -1,0 +1,88 @@
+<div class="dash-page">
+  <div class="dash-header">
+    <div>
+      <h1 class="serif-title">Quartermaster's Deck</h1>
+      <p>Chart new voyages and manage your fleet's progress.</p>
+    </div>
+    <button class="btn-primary action-btn" (click)="showForm.set(!showForm())">
+      {{ showForm() ? 'Cancel Charting' : 'Chart New Voyage' }}
+    </button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-val">{{ courses().length }}</span>
+      <span class="stat-lbl">Voyages Charted</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val">{{ totalStudents() | number }}</span>
+      <span class="stat-lbl">Sailors Enlisted</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val">{{ publishedCount() }}</span>
+      <span class="stat-lbl">Active Voyages</span>
+    </div>
+  </div>
+
+  <!-- Add Course Form -->
+  <div class="add-form" *ngIf="showForm()">
+    <h2 class="serif-title form-title">Chart New Voyage</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Voyage Title</label>
+        <input type="text" [(ngModel)]="newCourse.title" placeholder="e.g. Master the CSS Oceans"/>
+      </div>
+      <div class="field">
+        <label>Sea Difficulty</label>
+        <select [(ngModel)]="newCourse.difficulty">
+          <option value="Easy">Calm Waters (Easy)</option>
+          <option value="Medium">Choppy Waves (Medium)</option>
+          <option value="Hard">Stormy Seas (Hard)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+        <label>Voyage Description</label>
+        <textarea [(ngModel)]="newCourse.description" placeholder="Write a brief description of the treasures waiting..." rows="3"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn-outline" (click)="resetForm()">Abandon</button>
+      <button class="btn-primary" (click)="addCourse()">Commit Map to Ink</button>
+    </div>
+  </div>
+
+  <!-- Courses Table -->
+  <div class="table-card">
+    <h2 class="serif-title form-title" style="margin-bottom: 1.5rem;">Your Voyages</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Voyage Title</th><th>Islands (Levels)</th><th>Sailors</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses()">
+          <td class="bold">{{ course.title }}</td>
+          <td>{{ course.levels || 0 }}</td>
+          <td>{{ course.students || 0 }}</td>
+          <td>
+             <span class="status-badge" [class.active]="course.is_published" [class.draft]="!course.is_published">
+              {{ course.is_published ? 'Sailing' : 'Anchored' }}
+            </span>
+          </td>
+          <td>
+            <div class="action-btns">
+              <button class="action-btn" (click)="toggleStatus(course)">
+                {{ course.is_published ? 'Drop Anchor' : 'Set Sail' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="courses().length === 0">
+          <td colspan="5" class="empty-state">No maps drafted yet. Start charting!</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

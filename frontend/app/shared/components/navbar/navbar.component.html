@@ -1,0 +1,45 @@
+<nav [class.scrolled]="scrolled()">
+  <div class="nav-inner">
+    <a routerLink="/home" class="logo">
+      <span class="logo-text">Tareqy</span>
+      <span class="logo-dot"></span>
+    </a>
+
+    <ul class="nav-links" [class.open]="menuOpen()">
+      <li><a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a></li>
+      <li><a href="#tracks">Tracks</a></li>
+      <li><a href="#how">How It Works</a></li>
+
+      <!-- Dashboard link — only when logged in -->
+      @if (auth.isLoggedIn()) {
+        <li>
+          <a [routerLink]="dashboardRoute" class="dash-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            {{ dashboardLabel }}
+          </a>
+        </li>
+      }
+    </ul>
+
+    <div class="nav-actions">
+      @if (!auth.isLoggedIn()) {
+        <a routerLink="/auth/login"    class="btn-outline">Login</a>
+        <a routerLink="/auth/register" class="btn-primary">Sign Up Free</a>
+      } @else if (auth.isLoggedIn() && auth.getUser()) {
+        <a routerLink="/profile" class="user-chip">
+          <div class="user-avatar">{{ auth.getUser()?.username?.charAt(0)?.toUpperCase() || '?' }}</div>
+          <span>{{ auth.getUser()?.username }}</span>
+        </a>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      }
+    </div>
+
+    <button class="menu-btn" (click)="menuOpen.set(!menuOpen())">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
