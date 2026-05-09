@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 export const dbconnection = async () => {
     try {
-        // 🚨 استغنينا عن process.env.MONGO_URI عشان نتجاهل أي إعدادات قديمة في الويندوز
         const URI = "mongodb://127.0.0.1:27017/Tareqy";
         
         await mongoose.connect(URI);
