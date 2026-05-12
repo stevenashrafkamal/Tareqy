@@ -1,5 +1,7 @@
 # 🚀 Tareqy (طريقي) - Career Roadmap & Progress Tracker
 
+![Tareqy Banner](taryqy.webp)
+
 **Tareqy** is a comprehensive platform designed to empower programmers to track their learning progress, follow structured roadmaps, and manage their educational journey effectively. This project is built using the **MEAN Stack** with a focus on scalability and clean architecture.
 
 ## 🌟 Overview
